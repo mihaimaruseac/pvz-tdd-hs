@@ -1,9 +1,49 @@
+{-# LANGUAGE RecordWildCards #-}
+
 import Test.QuickCheck
 
 type Life = Int
 type Position = Int
 type Speed = Int
 type Damage = Int
+
+data Zombie = Z
+  { zPos :: Position
+  , zLife :: Life
+  , zSpeed :: Speed
+  , zDmg :: Damage
+  } deriving (Eq, Show)
+
+data Plant = P
+  { pLife :: Life
+  } deriving (Eq, Show)
+
+data Bullet = B
+  { bPos :: Position
+  , bSpeed :: Speed
+  , bDmg :: Damage
+  } deriving (Eq, Show)
+
+globalZombieSpeed = 20
+globalZombieDmg = 1
+globalBulletSpeed = 300
+globalBulletDmg = 1
+
+instance Arbitrary Zombie where
+  arbitrary = do
+    pos <- arbitrary
+    life <- arbitrary
+    return $ Z (abs pos) (abs life) globalZombieSpeed globalZombieDmg
+
+instance Arbitrary Plant where
+  arbitrary = do
+    life <- arbitrary
+    return $ P (abs life)
+
+instance Arbitrary Bullet where
+  arbitrary = do
+    pos <- arbitrary
+    return $ B (abs pos) globalBulletSpeed globalBulletDmg
 
 {-
 Returns if an entity is alive, based on its life value.
@@ -63,22 +103,30 @@ testSecondElapsed position speed = position + speed == increasePosition position
 {-
 A projectile hits a zombie if its position is greater or equal than zombie's.
 -}
-testZombieIsShot pp zp = pp >= zp ==> isZombieHit pp zp
+testZombieIsShot Z{..} B{..}
+  = bPos >= zPos
+  ==> isZombieHit bPos zPos
 
 {-
 When a zombie is hit, it's life is decreased.
 -}
-testZombieShot pp zp lifez dmgp = isZombieHit pp zp ==> lifez - dmgp == damageEntity lifez dmgp
+testZombieShot Z{..} B{..}
+  = isZombieHit bPos zPos
+  ==> zLife - bDmg == damageEntity zLife bDmg
 
 {-
 A zombie can eat a plant if it is near it.
 -}
-testZombieCanEat zp = zp == 0 ==> zombieNearPlant zp
+testZombieCanEat Z{..}
+  = zPos == 0
+  ==> zombieNearPlant zPos
 
 {-
 When a zombie is near the plant, he eats it.
 -}
-testZombieEatsPlant zp lifep dmgz = zombieNearPlant zp ==> lifep - dmgz == damageEntity lifep dmgz
+testZombieEatsPlant Z{..} P{..}
+  = zombieNearPlant zPos
+  ==> pLife - zDmg == damageEntity pLife zDmg
 
 {-
 Test all properties in a single run.
