@@ -1,9 +1,11 @@
 import Test.QuickCheck
 
+type Life = Int
+
 {-
 Returns if an entity is alive, based on its life value.
 -}
-isEntityAlive :: Int -> Bool
+isEntityAlive :: Life -> Bool
 isEntityAlive life = life > 0
 
 {-
