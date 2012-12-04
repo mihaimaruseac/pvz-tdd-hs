@@ -12,3 +12,11 @@ testPlantWithZeroLifeIsDead = isPlantDead 0
 Tests if a plant with non-zero life is alive.
 -}
 testPlantWithLifeIsAlive = False
+
+{-
+Enumeration containing all tests.
+-}
+allTests =
+  [ testPlantWithZeroLifeIsDead
+  , testPlantWithLifeIsAlive
+  ]
