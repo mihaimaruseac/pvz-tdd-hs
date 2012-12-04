@@ -17,6 +17,12 @@ testPlantWithLifeIsAlive = False
 Enumeration containing all tests.
 -}
 allTests =
-  [ testPlantWithZeroLifeIsDead
-  , testPlantWithLifeIsAlive
+  [ (testPlantWithZeroLifeIsDead, "testPlantWithZeroLifeIsDead")
+  , (testPlantWithLifeIsAlive, "testPlantWithLifeIsAlive")
   ]
+
+testOne (tf, tn) = do
+  putStrLn $ "Testing " ++ tn
+  quickCheck tf
+
+testAll = mapM_ testOne allTests
