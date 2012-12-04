@@ -1,6 +1,9 @@
 import Test.QuickCheck
 
 type Life = Int
+type Position = Int
+type Speed = Int
+type Damage = Int
 
 {-
 Returns if an entity is alive, based on its life value.
@@ -28,7 +31,7 @@ An entity should reduce the life of another entity.
 -}
 testEntityDamageEntity life damage = life - damage == damageEntity life damage
   where
-    damageEntity :: Life -> Int -> Life
+    damageEntity :: Life -> Damage -> Life
     damageEntity life damage = life - damage
 
 {-
@@ -36,7 +39,7 @@ Second elapsed for entity: the position should increase by entity's speed.
 -}
 testSecondElapsed position speed = position + speed == increasePosition position speed
   where
-    increasePosition :: Int -> Int -> Int
+    increasePosition :: Position -> Speed -> Position
     increasePosition position speed = position + speed
 
 {-
