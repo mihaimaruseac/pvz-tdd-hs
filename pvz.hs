@@ -26,10 +26,10 @@ testEntityWithNegativeLifeIsDead life = life < 0 ==> not $ isEntityAlive life
 {-
 An entity should reduce the life of another entity.
 -}
-testEntityDamageEntity life = life - 1 == damageEntity life
+testEntityDamageEntity life damage = life - damage == damageEntity life damage
   where
-    damageEntity :: Life -> Life
-    damageEntity life = life - 1
+    damageEntity :: Life -> Int -> Life
+    damageEntity life damage = life - damage
 
 {-
 Test all properties in a single run.
