@@ -69,6 +69,16 @@ testZombieCanEat zp = zp == 0 ==> zombieNearPlant zp
     zombieNearPlant zp = zp == 0
 
 {-
+When a zombie is near the plant, he eats it.
+-}
+testZombieEatsPlant zp lifep dmgz = zombieNearPlant zp ==> lifep - dmgz == damageEntity lifep dmgz
+  where
+    damageEntity :: Life -> Damage -> Life
+    damageEntity life damage = life - damage
+    zombieNearPlant :: Position -> Bool
+    zombieNearPlant zp = zp == 0
+
+{-
 Test all properties in a single run.
 -}
 testAll = do
@@ -88,3 +98,5 @@ testAll = do
   quickCheck testZombieIsShot
   putStrLn "Testing testZombieCanEat"
   quickCheck testZombieCanEat
+  putStrLn "Testing testZombieEatsPlant"
+  quickCheck testZombieEatsPlant
