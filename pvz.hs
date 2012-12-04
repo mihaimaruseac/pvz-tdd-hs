@@ -2,6 +2,8 @@ import Test.QuickCheck
 
 {-
 Tests if a plant with zero life dies.
-For now, this test should fail.
 -}
-testPlantWithZeroLifeIsDead = False
+testPlantWithZeroLifeIsDead = isPlantDead 0
+  where
+    isPlantDead :: Int -> Bool
+    isPlantDead life = False
