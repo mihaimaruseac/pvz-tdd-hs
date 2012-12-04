@@ -51,6 +51,16 @@ testZombieIsShot pp zp = pp >= zp ==> isZombieHit pp zp
     isZombieHit pp zp = pp >= zp
 
 {-
+When a zombie is hit, it's life is decreased.
+-}
+testZombieShot pp zp lifez dmgp = isZombieHit pp zp ==> lifez - dmgp == damageEntity lifez dmgp
+  where
+    damageEntity :: Life -> Damage -> Life
+    damageEntity life damage = life - damage
+    isZombieHit :: Position -> Position -> Bool
+    isZombieHit pp zp = pp >= zp
+
+{-
 Test all properties in a single run.
 -}
 testAll = do
@@ -65,4 +75,6 @@ testAll = do
   putStrLn "Testing testSecondElapsed"
   quickCheck testSecondElapsed
   putStrLn "Testing testZombieIsShot"
+  quickCheck testZombieShot
+  putStrLn "Testing testZombieShot"
   quickCheck testZombieIsShot
