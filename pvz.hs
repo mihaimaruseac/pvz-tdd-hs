@@ -9,17 +9,17 @@ isEntityAlive :: Life -> Bool
 isEntityAlive life = life > 0
 
 {-
-Tests if an entity with zero life dies.
+An entity with zero life dies.
 -}
 testEntityWithZeroLifeIsDead = not $ isEntityAlive 0
 
 {-
-Tests if an entity with positive life is alive.
+An entity with positive life is alive.
 -}
 testEntityWithLifeIsAlive life = life > 0 ==> isEntityAlive life
 
 {-
-Tests if an entity with negative life is dead.
+An entity with negative life is dead.
 -}
 testEntityWithNegativeLifeIsDead life = life < 0 ==> not $ isEntityAlive life
 
