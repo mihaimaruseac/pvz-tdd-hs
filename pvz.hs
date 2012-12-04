@@ -19,7 +19,10 @@ testPlantWithLifeIsAlive life = life > 0 ==> isPlantAlive life
 {-
 Tests if a plant with negative life is dead.
 -}
-testPlantWithNegativeLifeIsDead = False
+testPlantWithNegativeLifeIsDead life = life < 0 ==> isPlantDead life
+  where
+    isPlantDead :: Int -> Bool
+    isPlantDead life = life < 0
 
 {-
 Test all properties in a single run.
