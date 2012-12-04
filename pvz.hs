@@ -32,6 +32,11 @@ testEntityDamageEntity life damage = life - damage == damageEntity life damage
     damageEntity life damage = life - damage
 
 {-
+Second elapsed for projectile: the position should increase by projectile speed.
+-}
+testSecondElapsedProjectile = False
+
+{-
 Test all properties in a single run.
 -}
 testAll = do
@@ -43,3 +48,5 @@ testAll = do
   quickCheck testEntityWithNegativeLifeIsDead
   putStrLn "Testing testEntityDamageEntity"
   quickCheck testEntityDamageEntity
+  putStrLn "Testing testSecondElapsedProjectile"
+  quickCheck testSecondElapsedProjectile
