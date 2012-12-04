@@ -1,28 +1,25 @@
 import Test.QuickCheck
 
 {-
+Returns if a plant is alive, based on its life value.
+-}
+isPlantAlive :: Int -> Bool
+isPlantAlive life = life > 0
+
+{-
 Tests if a plant with zero life dies.
 -}
-testPlantWithZeroLifeIsDead = isPlantDead 0
-  where
-    isPlantDead :: Int -> Bool
-    isPlantDead life = life == 0
+testPlantWithZeroLifeIsDead = not $ isPlantAlive 0
 
 {-
 Tests if a plant with positive life is alive.
 -}
 testPlantWithLifeIsAlive life = life > 0 ==> isPlantAlive life
-  where
-    isPlantAlive :: Int -> Bool
-    isPlantAlive life = life > 0
 
 {-
 Tests if a plant with negative life is dead.
 -}
-testPlantWithNegativeLifeIsDead life = life < 0 ==> isPlantDead life
-  where
-    isPlantDead :: Int -> Bool
-    isPlantDead life = life < 0
+testPlantWithNegativeLifeIsDead life = life < 0 ==> not $ isPlantAlive life
 
 {-
 Test all properties in a single run.
