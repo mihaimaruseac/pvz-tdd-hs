@@ -43,9 +43,12 @@ testSecondElapsed position speed = position + speed == increasePosition position
     increasePosition position speed = position + speed
 
 {-
-A projectile hit a zombie.
+A projectile hits a zombie if its position is greater or equal than zombie's.
 -}
-testZombieIsShot = False
+testZombieIsShot pp zp = pp >= zp ==> isZombieHit pp zp
+  where
+    isZombieHit :: Position -> Position -> Bool
+    isZombieHit pp zp = pp >= zp
 
 {-
 Test all properties in a single run.
