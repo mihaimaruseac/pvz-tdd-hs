@@ -6,4 +6,4 @@ Tests if a plant with zero life dies.
 testPlantWithZeroLifeIsDead = isPlantDead 0
   where
     isPlantDead :: Int -> Bool
-    isPlantDead life = False
+    isPlantDead life = life == 0
