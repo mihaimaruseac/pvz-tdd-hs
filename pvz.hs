@@ -9,9 +9,9 @@ testPlantWithZeroLifeIsDead = isPlantDead 0
     isPlantDead life = life == 0
 
 {-
-Tests if a plant with non-zero life is alive.
+Tests if a plant with positive life is alive.
 -}
-testPlantWithLifeIsAlive life = life /= 0 ==> isPlantAlive life
+testPlantWithLifeIsAlive life = life > 0 ==> isPlantAlive life
   where
     isPlantAlive :: Int -> Bool
     isPlantAlive life = life > 0
