@@ -14,15 +14,10 @@ Tests if a plant with non-zero life is alive.
 testPlantWithLifeIsAlive = False
 
 {-
-Enumeration containing all tests.
+Test all properties in a single run.
 -}
-allTests =
-  [ (testPlantWithZeroLifeIsDead, "testPlantWithZeroLifeIsDead")
-  , (testPlantWithLifeIsAlive, "testPlantWithLifeIsAlive")
-  ]
-
-testOne (tf, tn) = do
-  putStrLn $ "Testing " ++ tn
-  quickCheck tf
-
-testAll = mapM_ testOne allTests
+testAll = do
+  putStrLn "Testing testPlantWithZeroLifeIsDead"
+  quickCheck testPlantWithZeroLifeIsDead
+  putStrLn "Testing testPlantWithLifeIsAlive"
+  quickCheck testPlantWithLifeIsAlive
