@@ -17,6 +17,11 @@ testPlantWithLifeIsAlive life = life > 0 ==> isPlantAlive life
     isPlantAlive life = life > 0
 
 {-
+Tests if a plant with negative life is dead.
+-}
+testPlantWithNegativeLifeIsDead = False
+
+{-
 Test all properties in a single run.
 -}
 testAll = do
@@ -24,3 +29,5 @@ testAll = do
   quickCheck testPlantWithZeroLifeIsDead
   putStrLn "Testing testPlantWithLifeIsAlive"
   quickCheck testPlantWithLifeIsAlive
+  putStrLn "Testing testPlantWithNegativeLifeIsDead"
+  quickCheck testPlantWithNegativeLifeIsDead
