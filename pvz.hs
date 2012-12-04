@@ -43,6 +43,11 @@ testSecondElapsed position speed = position + speed == increasePosition position
     increasePosition position speed = position + speed
 
 {-
+A projectile hit a zombie.
+-}
+testZombieIsShot = False
+
+{-
 Test all properties in a single run.
 -}
 testAll = do
@@ -56,3 +61,5 @@ testAll = do
   quickCheck testEntityDamageEntity
   putStrLn "Testing testSecondElapsed"
   quickCheck testSecondElapsed
+  putStrLn "Testing testZombieIsShot"
+  quickCheck testZombieIsShot
