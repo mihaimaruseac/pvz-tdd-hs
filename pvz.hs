@@ -32,13 +32,13 @@ globalBulletDmg = 1
 instance Arbitrary Zombie where
   arbitrary = do
     pos <- arbitrary
-    life <- arbitrary
-    return $ Z (abs pos) (abs life) globalZombieSpeed globalZombieDmg
+    life <- arbitrarySizedBoundedIntegral
+    return $ Z (abs pos) life globalZombieSpeed globalZombieDmg
 
 instance Arbitrary Plant where
   arbitrary = do
-    life <- arbitrary
-    return $ P (abs life)
+    life <- arbitrarySizedBoundedIntegral
+    return $ P life
 
 instance Arbitrary Bullet where
   arbitrary = do
@@ -76,29 +76,36 @@ damageEntity :: Life -> Damage -> Life
 damageEntity life damage = life - damage
 
 {-
-An entity with zero life dies.
--}
-testEntityWithZeroLifeIsDead = not $ isEntityAlive 0
-
-{-
 An entity with positive life is alive.
 -}
-testEntityWithLifeIsAlive life = life > 0 ==> isEntityAlive life
+testEntityWithLifeIsAliveP P{..}
+  = pLife > 0
+  ==> isEntityAlive pLife
+testEntityWithLifeIsAliveZ Z{..}
+  = zLife > 0
+  ==> isEntityAlive zLife
 
 {-
-An entity with negative life is dead.
+An entity with non-positive life is dead.
 -}
-testEntityWithNegativeLifeIsDead life = life < 0 ==> not $ isEntityAlive life
+testEntityWithNegativeLifeIsDeadP P{..}
+  = pLife <= 0
+  ==> not $ isEntityAlive pLife
+testEntityWithNegativeLifeIsDeadZ Z{..}
+  = zLife <= 0
+  ==> not $ isEntityAlive zLife
 
 {-
 An entity should reduce the life of another entity.
 -}
-testEntityDamageEntity life damage = life - damage == damageEntity life damage
+testEntityDamageEntityPZ P{..} Z{..} = pLife - zDmg == damageEntity pLife zDmg
+testEntityDamageEntityZB Z{..} B{..} = zLife - bDmg == damageEntity zLife bDmg
 
 {-
 Second elapsed for entity: the position should increase by entity's speed.
 -}
-testSecondElapsed position speed = position + speed == increasePosition position speed
+testSecondElapsedZ Z{..} = zPos + zSpeed == increasePosition zPos zSpeed
+testSecondElapsedB B{..} = bPos + bSpeed == increasePosition bPos bSpeed
 
 {-
 A projectile hits a zombie if its position is greater or equal than zombie's.
@@ -132,16 +139,22 @@ testZombieEatsPlant Z{..} P{..}
 Test all properties in a single run.
 -}
 testAll = do
-  putStrLn "Testing testEntityWithZeroLifeIsDead"
-  quickCheck testEntityWithZeroLifeIsDead
-  putStrLn "Testing testEntityWithLifeIsAlive"
-  quickCheck testEntityWithLifeIsAlive
-  putStrLn "Testing testEntityWithNegativeLifeIsDead"
-  quickCheck testEntityWithNegativeLifeIsDead
-  putStrLn "Testing testEntityDamageEntity"
-  quickCheck testEntityDamageEntity
-  putStrLn "Testing testSecondElapsed"
-  quickCheck testSecondElapsed
+  putStrLn "Testing testEntityWithLifeIsAliveP"
+  quickCheck testEntityWithLifeIsAliveP
+  putStrLn "Testing testEntityWithLifeIsAliveZ"
+  quickCheck testEntityWithLifeIsAliveZ
+  putStrLn "Testing testEntityWithNegativeLifeIsDeadP"
+  quickCheck testEntityWithNegativeLifeIsDeadP
+  putStrLn "Testing testEntityWithNegativeLifeIsDeadZ"
+  quickCheck testEntityWithNegativeLifeIsDeadZ
+  putStrLn "Testing testEntityDamageEntityPZ"
+  quickCheck testEntityDamageEntityPZ
+  putStrLn "Testing testEntityDamageEntityZB"
+  quickCheck testEntityDamageEntityZB
+  putStrLn "Testing testSecondElapsedZ"
+  quickCheck testSecondElapsedZ
+  putStrLn "Testing testSecondElapsedB"
+  quickCheck testSecondElapsedB
   putStrLn "Testing testZombieIsShot"
   quickCheck testZombieShot
   putStrLn "Testing testZombieShot"
