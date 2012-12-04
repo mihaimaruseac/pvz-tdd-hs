@@ -24,6 +24,11 @@ An entity with negative life is dead.
 testEntityWithNegativeLifeIsDead life = life < 0 ==> not $ isEntityAlive life
 
 {-
+An entity should reduce the life of another entity.
+-}
+testEntityDamageEntity = False
+
+{-
 Test all properties in a single run.
 -}
 testAll = do
@@ -33,3 +38,5 @@ testAll = do
   quickCheck testEntityWithLifeIsAlive
   putStrLn "Testing testEntityWithNegativeLifeIsDead"
   quickCheck testEntityWithNegativeLifeIsDead
+  putStrLn "Testing testEntityDamageEntity"
+  quickCheck testEntityDamageEntity
